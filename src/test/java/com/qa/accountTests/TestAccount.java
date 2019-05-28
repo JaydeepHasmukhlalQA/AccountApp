@@ -1,14 +1,19 @@
 package com.qa.accountTests;
 
+import static org.junit.Assert.*;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import com.qa.app.Account;
+import com.qa.app.AccountRepositoryMap;
 
 public class TestAccount {
 	Account account;
 	AccountRepositoryMap arm;
 	
 	@Before
-	public void setup() {
+	public void initSetup() {
 		account = new Account();
 		arm = new AccountRepositoryMap();
 	}
@@ -34,8 +39,8 @@ public class TestAccount {
 	
 	@Test
 	public void testAccountSurname() {
-		account.setFirstname("Hasmukhlal");
-		String surname = account.getFirstname();
+		account.setSurname("Hasmukhlal");
+		String surname = account.getSurname();
 		assertEquals("Account surname not match", "Hasmukhlal", surname);
 	}
 	
