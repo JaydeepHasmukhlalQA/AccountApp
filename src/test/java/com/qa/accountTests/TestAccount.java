@@ -6,15 +6,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.qa.app.Account;
+import com.qa.app.AccountRepositoryDB;
 import com.qa.app.AccountRepositoryMap;
 
 public class TestAccount {
 	Account account;
 	AccountRepositoryMap arm;
+	AccountRepositoryDB ard;
 	
 	@Before
 	public void initSetup() {
 		account = new Account();
+		ard = new AccountRepositoryDB();
 		arm = new AccountRepositoryMap();
 	}
 	
@@ -57,12 +60,42 @@ public class TestAccount {
 	}
 	
 	@Test
-	public void testAccountRetrived() {
+	public void testAccountAddAndRetrived() {
 		int id = 2;
 		account.setId(id);
 		account.setFirstname("Jay");
 		arm.add(account);
 		Account retrievedAccount = arm.retrieve(id);
 		assertEquals("Wrong account retrieved", account, retrievedAccount);
+	}
+	
+	@Test
+	public void testCreateAccountRepositoryDB() {
+		assertEquals("Account Repoitory DB was not created", "AccountRepositoryDB", ard.getClass().getSimpleName());
+	}
+	
+	@Test
+	public void testAccountAddAndRetrieved() {
+		account.setFirstname("Jay");
+		ard.add(account);
+		int id = account.getId();
+		Account retrievedAccount = ard.retrieve(id);
+		assertEquals("Wrong account retrieved", account, retrievedAccount);
+	}
+	
+	@Test
+	public void testAccountRepositoryUpdate() {
+		account.setFirstname("Jay");
+		ard.add(account);
+		ard.updateFirstname(account.getId(), "JoJo");
+		assertEquals("Wrong name updated", "JoJo", account.getFirstname());
+	}
+	
+	@Test
+	public void testAccountRepositoryRemove() {
+		account.setFirstname("Bad name");
+		ard.add(account);
+		ard.remove(account.getId());
+		assertEquals("Did not remove account", null, "Bad name");
 	}
 }
